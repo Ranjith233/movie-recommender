@@ -1,9 +1,3 @@
-"""
-Notebook Generator Script
-Generates a complete, narrative-driven Jupyter notebook (notebooks/01_recommender.ipynb)
-with markdown explanations, code blocks, visualizations, and executed outputs.
-"""
-
 import nbformat as nbf
 import os
 
@@ -11,7 +5,6 @@ nb = nbf.v4.new_notebook()
 
 cells = []
 
-# Title & Intro
 cells.append(nbf.v4.new_markdown_cell("""# 🎬 Content-Based Movie Recommendation & Personalization Engine
 **Author:** Portfolio Project  
 **Tech Stack:** Python 3.11+, Pandas, Scikit-Learn (TF-IDF & Cosine Similarity), Matplotlib, Seaborn
@@ -29,10 +22,9 @@ While **Collaborative Filtering** relies on user interaction matrices (ratings, 
 - It provides **inherent explainability** (e.g., "Recommended because you enjoyed psychological sci-fi directed by Christopher Nolan").
 
 ### System Architecture
-$$\text{Catalog Data} \longrightarrow \text{Preprocessing} \longrightarrow \text{Feature Weighting} \longrightarrow \text{TF-IDF} \longrightarrow \text{Cosine Similarity} \longrightarrow \text{Hybrid Top-N Ranking}$$
+$$\\text{Catalog Data} \\longrightarrow \\text{Preprocessing} \\longrightarrow \\text{Feature Weighting} \\longrightarrow \\text{TF-IDF} \\longrightarrow \\text{Cosine Similarity} \\longrightarrow \\text{Hybrid Top-N Ranking}$$
 """))
 
-# Setup & Imports
 cells.append(nbf.v4.new_markdown_cell("""## ⚙️ 2. Environment Setup & Data Ingestion"""))
 cells.append(nbf.v4.new_code_cell("""import os
 import sys
@@ -44,12 +36,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import difflib
 
-# Add root directory to sys.path
 sys.path.append(os.path.abspath('..'))
 from src.preprocess import clean_text, collapse_names, build_feature_tags, load_and_preprocess_catalog
 from src.recommender import ContentBasedRecommender
 
-# Plotting settings
 sns.set_theme(style="whitegrid", palette="muted")
 plt.rcParams["figure.figsize"] = (10, 5)
 plt.rcParams["font.size"] = 10
@@ -57,20 +47,16 @@ plt.rcParams["font.size"] = 10
 print("Libraries imported successfully!")
 """))
 
-# Load data & EDA
 cells.append(nbf.v4.new_markdown_cell("""## 📊 3. Exploratory Data Analysis (EDA)"""))
-cells.append(nbf.v4.new_code_cell("""# Load catalog
-df_raw = pd.read_csv('../data/movies.csv')
+cells.append(nbf.v4.new_code_cell("""df_raw = pd.read_csv('../data/movies.csv')
 print(f"Total Movies: {df_raw.shape[0]} | Attributes: {df_raw.shape[1]}")
 df_raw.head(3)
 """))
 
-cells.append(nbf.v4.new_code_cell("""# Inspect missing values and summary stats
-df_raw.info()
+cells.append(nbf.v4.new_code_cell("""df_raw.info()
 """))
 
-cells.append(nbf.v4.new_code_cell("""# Analyze Genre Distributions
-genre_series = df_raw['genres'].dropna().str.split(', ').explode()
+cells.append(nbf.v4.new_code_cell("""genre_series = df_raw['genres'].dropna().str.split(', ').explode()
 plt.figure(figsize=(10, 4))
 genre_series.value_counts().head(12).plot(kind='bar', color='#3b82f6', edgecolor='black')
 plt.title('Top 12 Most Frequent Genres in Catalog', fontsize=12, fontweight='bold')
@@ -81,8 +67,7 @@ plt.tight_layout()
 plt.show()
 """))
 
-cells.append(nbf.v4.new_code_cell("""# Analyze Release Year and Rating Distributions
-fig, axes = plt.subplots(1, 2, figsize=(13, 4))
+cells.append(nbf.v4.new_code_cell("""fig, axes = plt.subplots(1, 2, figsize=(13, 4))
 
 sns.histplot(df_raw['release_year'], bins=20, kde=True, ax=axes[0], color='#10b981')
 axes[0].set_title('Distribution of Movie Release Years', fontweight='bold')
@@ -96,7 +81,6 @@ plt.tight_layout()
 plt.show()
 """))
 
-# Feature Engineering
 cells.append(nbf.v4.new_markdown_cell("""## 🛠️ 4. Text Feature Engineering & Strategic Weighting
 A standard content-based recommender often concatenates:
 $$\\text{tags} = \\text{genres} + \\text{keywords} + \\text{overview} + \\text{director}$$
@@ -113,8 +97,7 @@ We apply **multi-field term weighting** by duplicating deliberate metadata token
 - **Entity Concatenation:** "Christopher Nolan" -> "ChristopherNolan" to prevent false co-occurrence with other "Christopher"s.
 """))
 
-cells.append(nbf.v4.new_code_cell("""# Generate baseline vs. weighted tags
-df_baseline = load_and_preprocess_catalog('../data/movies.csv', weighted=False)
+cells.append(nbf.v4.new_code_cell("""df_baseline = load_and_preprocess_catalog('../data/movies.csv', weighted=False)
 df_weighted = load_and_preprocess_catalog('../data/movies.csv', weighted=True)
 
 print("Sample Baseline Tag Document (Inception):")
@@ -123,7 +106,6 @@ print("\\nSample Weighted Tag Document (Inception):")
 print(df_weighted.iloc[0]['tags'][:200] + "...")
 """))
 
-# NLP & TF-IDF
 cells.append(nbf.v4.new_markdown_cell("""## 🧮 5. NLP Vectorization: TF-IDF Matrix
 We transform text documents into numerical feature vectors using **Term Frequency - Inverse Document Frequency (TF-IDF)**:
 
@@ -140,7 +122,6 @@ print(f"Vocabulary Size: {len(vectorizer.get_feature_names_out())} tokens")
 print(f"Sparsity: {100.0 * (1.0 - tfidf_matrix.nnz / (tfidf_matrix.shape[0] * tfidf_matrix.shape[1])):.2f}%")
 """))
 
-# Cosine Similarity
 cells.append(nbf.v4.new_markdown_cell("""## 📐 6. Similarity Computation: Cosine Similarity
 Cosine similarity evaluates the angular alignment between two multi-dimensional feature vectors regardless of length:
 
@@ -149,7 +130,6 @@ $$\\text{Cosine Similarity}(\\vec{u}, \\vec{v}) = \\frac{\\vec{u} \\cdot \\vec{v
 
 cells.append(nbf.v4.new_code_cell("""sim_matrix = cosine_similarity(tfidf_matrix)
 
-# Visualize Similarity Sub-Matrix for 8 Classic Movies
 sample_titles = [
     "Inception", "Interstellar", "The Dark Knight", 
     "The Godfather", "GoodFellas", "Pulp Fiction", 
@@ -166,7 +146,6 @@ plt.tight_layout()
 plt.show()
 """))
 
-# Recommender Implementation
 cells.append(nbf.v4.new_markdown_cell("""## 🚀 7. Core Recommender Implementation & Testing
 We wrap the model in `ContentBasedRecommender` with:
 - **Graceful Title Resolution:** Handles case-folding, substring matching, and fuzzy matching for typos.
@@ -178,7 +157,6 @@ We wrap the model in `ContentBasedRecommender` with:
 
 cells.append(nbf.v4.new_code_cell("""recommender = ContentBasedRecommender(df_weighted)
 
-# Test 1: Inception
 print("--- Recommendations for 'Inception' ---")
 recs = recommender.recommend("Inception", n=5)
 for idx, r in recs.iterrows():
@@ -186,22 +164,19 @@ for idx, r in recs.iterrows():
     print(f"   Why: {r['why_recommended']}")
 """))
 
-cells.append(nbf.v4.new_code_cell("""# Test 2: Handling Unknown / Typo Movie Titles Gracefully (PDF Section 7)
-typo_queries = ["intersteler", "dark night", "godfthr", "spirit away"]
+cells.append(nbf.v4.new_code_cell("""typo_queries = ["intersteler", "dark night", "godfthr", "spirit away"]
 
 for q in typo_queries:
     matched, idx, alts = recommender.find_title(q)
     print(f"User Query: '{q}'  ==> Resolved To: '{matched}'")
 """))
 
-# Improvements
 cells.append(nbf.v4.new_markdown_cell("""## 💡 8. Advanced Improvements (PDF Section 8)
 1. **Hybrid Rating Boost:** $S_{\\text{final}} = (1 - \\alpha) \\cdot S_{\\text{sim}} + \\alpha \\cdot (\\text{Rating} / 10)$
 2. **Intra-List Diversity:** Prevents a single franchise/director from monopolizing the recommendation slots.
 """))
 
-cells.append(nbf.v4.new_code_cell("""# Compare Standard Similarity vs. Hybrid Quality Boost for 'The Dark Knight'
-recs_pure_sim = recommender.recommend("The Dark Knight", n=5, rating_weight=0.0, apply_diversity=False)
+cells.append(nbf.v4.new_code_cell("""recs_pure_sim = recommender.recommend("The Dark Knight", n=5, rating_weight=0.0, apply_diversity=False)
 recs_hybrid = recommender.recommend("The Dark Knight", n=5, rating_weight=0.20, apply_diversity=True)
 
 df_comp = pd.DataFrame({
@@ -213,7 +188,6 @@ df_comp = pd.DataFrame({
 df_comp
 """))
 
-# Evaluation
 cells.append(nbf.v4.new_markdown_cell("""## 🎯 9. Model Evaluation (PDF Section 10)
 Offline evaluation using a 20-seed benchmark set measuring:
 - **Precision@5:** Fraction of top-5 recommendations that are thematically relevant.
@@ -235,7 +209,6 @@ print(f"Catalog Coverage:       {eval_results['catalog_coverage_pct']:.1f}%")
 print(f"Average Query Latency:  {eval_results['mean_query_latency_ms']:.2f} ms")
 """))
 
-# Conclusion
 cells.append(nbf.v4.new_markdown_cell("""## 📌 10. Conclusion & Future Roadmap
 ### Key Accomplishments
 1. **Explainable AI:** Recommendations are fully auditable with transparent shared keywords and metadata rationale.

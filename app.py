@@ -1,15 +1,3 @@
-"""
-Movie Recommendation & Personalization System
-Interactive Streamlit Application
-
-Implements:
-- Content-Based Recommendation with TF-IDF and Cosine Similarity
-- Metadata feature weighting & explainable AI reasoning
-- Multi-attribute filtering (genre, release year, language, rating threshold)
-- Hybrid ranking with critical rating & popularity signals
-- Benchmark evaluation metrics & interview knowledge base
-"""
-
 import os
 import json
 import streamlit as st
@@ -19,8 +7,6 @@ import numpy as np
 from src.preprocess import load_and_preprocess_catalog
 from src.recommender import ContentBasedRecommender
 
-
-# --- Page Configuration ---
 st.set_page_config(
     page_title="CineMatch AI | Movie Recommendation System",
     page_icon="🎬",
@@ -28,17 +14,14 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Custom Styling ---
 st.markdown(
     """
     <style>
-    /* Global accents */
     .stApp {
         background-color: #0d1117;
         color: #e6edf3;
     }
     
-    /* Header hero styling */
     .hero-container {
         background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         border: 1px solid #374151;
@@ -59,7 +42,6 @@ st.markdown(
         margin-bottom: 0;
     }
 
-    /* Seed movie card */
     .seed-box {
         background: #161b22;
         border: 1px solid #30363d;
@@ -69,7 +51,6 @@ st.markdown(
         margin-bottom: 24px;
     }
 
-    /* Recommendation card */
     .rec-card {
         background: #161b22;
         border: 1px solid #30363d;
@@ -134,18 +115,15 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 @st.cache_data(show_spinner="Loading catalog...")
 def get_catalog_data():
     csv_path = os.path.join(os.path.dirname(__file__), "data", "movies.csv")
     df = load_and_preprocess_catalog(csv_path, weighted=True)
     return df
 
-
 @st.cache_resource(show_spinner="Indexing TF-IDF vectors...")
 def get_recommender(df):
     return ContentBasedRecommender(df)
-
 
 @st.cache_data
 def get_evaluation_report():
@@ -155,20 +133,16 @@ def get_evaluation_report():
             return json.load(f)
     return None
 
-
-# --- App State ---
 df = get_catalog_data()
 recommender = get_recommender(df)
 eval_report = get_evaluation_report()
 
-# --- Sidebar Controls ---
 st.sidebar.image(
     "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&auto=format&fit=crop&q=60",
     use_container_width=True,
 )
 st.sidebar.title("🎛️ Discovery Controls")
 
-# Seed movie selection
 sorted_titles = sorted(df["title"].unique())
 default_seed = "Inception" if "Inception" in sorted_titles else sorted_titles[0]
 selected_title = st.sidebar.selectbox(
@@ -178,13 +152,11 @@ selected_title = st.sidebar.selectbox(
     help="Pick a movie you love to generate content-based recommendations.",
 )
 
-# Number of recommendations
 top_n = st.sidebar.slider("Number of Recommendations (Top-N):", min_value=3, max_value=15, value=6)
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("🔍 Metadata Filters")
 
-# Genre filter
 all_genres_set = set()
 for g_str in df["genres"].dropna():
     for g in g_str.split(","):
@@ -193,11 +165,9 @@ for g_str in df["genres"].dropna():
 genres_list = ["All"] + sorted(list(all_genres_set))
 selected_genre = st.sidebar.selectbox("Filter by Genre:", genres_list, index=0)
 
-# Language filter
 all_languages = ["All"] + sorted([l for l in df["language"].dropna().unique() if l])
 selected_language = st.sidebar.selectbox("Filter by Language:", all_languages, index=0)
 
-# Release year range
 min_c_year = int(df["release_year"].min())
 max_c_year = int(df["release_year"].max())
 year_range = st.sidebar.slider(
@@ -208,7 +178,6 @@ year_range = st.sidebar.slider(
     step=1,
 )
 
-# Rating filter
 min_rating = st.sidebar.slider(
     "Minimum IMDb Rating:",
     min_value=5.0,
@@ -232,8 +201,6 @@ apply_diversity = st.sidebar.checkbox(
     help="Penalizes near-duplicate items from the same franchise or creator (PDF Section 8).",
 )
 
-
-# --- Main Header ---
 st.markdown(
     """
     <div class="hero-container">
@@ -247,7 +214,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- Active Seed Profile ---
 seed_matches = df[df["title"] == selected_title]
 if not seed_matches.empty:
     seed_row = seed_matches.iloc[0]
@@ -277,7 +243,6 @@ if not seed_matches.empty:
         unsafe_allow_html=True,
     )
 
-# --- Multi-tab Layout ---
 tab_recs, tab_analytics, tab_eval, tab_interview = st.tabs([
     "🍿 Recommendations Grid",
     "📊 Similarity & Term Breakdown",
@@ -285,7 +250,6 @@ tab_recs, tab_analytics, tab_eval, tab_interview = st.tabs([
     "💡 Architecture & Interview Prep",
 ])
 
-# --- TAB 1: Recommendations Grid ---
 with tab_recs:
     try:
         recs_df = recommender.recommend(
@@ -305,10 +269,7 @@ with tab_recs:
             st.warning("⚠️ No movies matched your specific filter combination. Try relaxing the year, genre, or minimum rating filters.")
         else:
             st.markdown(f"### Top {len(recs_df)} Personalized Matches for '{selected_title}'")
-            
-            # Display recommendations in 2 responsive columns
             col1, col2 = st.columns(2)
-            
             for idx, (_, item) in enumerate(recs_df.iterrows()):
                 target_col = col1 if idx % 2 == 0 else col2
                 with target_col:
@@ -316,7 +277,6 @@ with tab_recs:
                         [f"<span class='badge-genre'>{g.strip()}</span>" for g in str(item['genres']).split(',')]
                     )
                     sim_pct = int(item['similarity_score'] * 100)
-                    
                     st.markdown(
                         f"""
                         <div class="rec-card">
@@ -349,7 +309,6 @@ with tab_recs:
     except Exception as e:
         st.error(f"Error computing recommendations: {str(e)}")
 
-# --- TAB 2: Similarity & Feature Analysis ---
 with tab_analytics:
     st.markdown("### 🔬 Interpretability & TF-IDF Vector Space Analysis")
     st.markdown(
@@ -360,12 +319,10 @@ with tab_analytics:
     )
 
     if not recs_df.empty:
-        # Comparison Chart of Scores
         chart_data = recs_df[["title", "similarity_score", "hybrid_score"]].set_index("title")
         st.subheader("Cosine Similarity vs. Final Hybrid Ranking Score")
         st.bar_chart(chart_data)
 
-        # Inspect Shared Vocabulary with #1 Recommendation
         top_1 = recs_df.iloc[0]
         st.subheader(f"Vector Overlap Breakdown: '{selected_title}' ↔ '{top_1['title']}'")
         
@@ -393,7 +350,6 @@ with tab_analytics:
         else:
             st.info("No single dominant keyword; recommendation driven by combined multi-field tags.")
 
-# --- TAB 3: Model Evaluation ---
 with tab_eval:
     st.markdown("### 🎯 Offline Benchmark Evaluation (Section 10 of Guide)")
     st.markdown(
@@ -433,7 +389,6 @@ with tab_eval:
     else:
         st.info("Run `python evaluate.py` to generate the latest evaluation report.")
 
-# --- TAB 4: Architecture & Interview Guide ---
 with tab_interview:
     st.markdown("### 📚 Architecture Walkthrough & Technical Interview Reference")
 

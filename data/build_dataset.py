@@ -1,15 +1,8 @@
-"""
-Data Generation Script for Movie Recommendation & Personalization System
-Builds a curated, diverse dataset of 150+ iconic films across genres, directors, and eras.
-Each record contains rich metadata: title, genres, overview, keywords, cast, director,
-rating, release_year, language, and popularity.
-"""
 
 import os
 import pandas as pd
 
 MOVIES_DATA = [
-    # --- SCI-FI / MIND-BENDERS & SPACE (Nolan, Wachowskis, Villeneuve, Kubrick) ---
     {
         "title": "Inception",
         "genres": "Action, Sci-Fi, Adventure",
@@ -335,7 +328,6 @@ MOVIES_DATA = [
         "popularity": 93.1
     },
 
-    # --- CRIME / GANGSTER / NEO-NOIR (Scorsese, Fincher, Tarantino, Coppola) ---
     {
         "title": "The Godfather",
         "genres": "Crime, Drama",
@@ -625,7 +617,6 @@ MOVIES_DATA = [
         "popularity": 87.5
     },
 
-    # --- BATMAN / SUPERHERO / ACTION BLOCKBUSTERS ---
     {
         "title": "The Dark Knight",
         "genres": "Action, Crime, Drama, Thriller",
@@ -783,7 +774,6 @@ MOVIES_DATA = [
         "popularity": 93.7
     },
 
-    # --- ACCLAIMED DRAMAS & MASTERPIECES ---
     {
         "title": "The Shawshank Redemption",
         "genres": "Drama",
@@ -881,7 +871,6 @@ MOVIES_DATA = [
         "popularity": 91.2
     },
 
-    # --- ROMANCE & ROMANTIC COMEDY ---
     {
         "title": "La La Land",
         "genres": "Comedy, Drama, Music, Romance",
@@ -967,7 +956,6 @@ MOVIES_DATA = [
         "popularity": 87.0
     },
 
-    # --- HORROR & PSYCHOLOGICAL SUSPENSE ---
     {
         "title": "The Shining",
         "genres": "Drama, Horror",
@@ -1065,7 +1053,6 @@ MOVIES_DATA = [
         "popularity": 87.4
     },
 
-    # --- ANIMATION & FAMILY (Pixar, Ghibli, Sony) ---
     {
         "title": "Spirited Away",
         "genres": "Animation, Adventure, Family, Fantasy",
@@ -1223,7 +1210,6 @@ MOVIES_DATA = [
         "popularity": 93.8
     },
 
-    # --- INTERNATIONAL ACCLAIMED GEMS ---
     {
         "title": "Parasite",
         "genres": "Comedy, Drama, Thriller",

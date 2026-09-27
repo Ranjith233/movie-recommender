@@ -1,10 +1,3 @@
-"""
-Model Evaluation and Benchmark Suite
-Measures Precision@K (K=5, K=10), Genre Alignment, Intra-List Diversity,
-Catalog Coverage, and Query Latency across a curated benchmark set.
-Documents failure modes and qualitative observations as required in Section 10 of the portfolio guide.
-"""
-
 import time
 import json
 import numpy as np
@@ -15,11 +8,6 @@ from src.recommender import ContentBasedRecommender
 
 
 def compute_intra_list_diversity(recommended_indices: List[int], similarity_matrix: np.ndarray) -> float:
-    """
-    Computes Intra-List Diversity (ILD) as the average pairwise cosine distance
-    between items in the recommendation list:
-    ILD = 1 - (2 / (K * (K - 1))) * sum_{i < j} sim(i, j)
-    """
     k = len(recommended_indices)
     if k <= 1:
         return 0.0
@@ -40,9 +28,6 @@ def evaluate_recommender(
     benchmark_path: str = "data/evaluation_benchmark.csv",
     weighted: bool = True
 ) -> Dict[str, Any]:
-    """
-    Runs automated evaluation across all benchmark seed movies.
-    """
     print(f"Loading catalog from {catalog_path} (Weighted={weighted})...")
     df = load_and_preprocess_catalog(catalog_path, weighted=weighted)
     recommender = ContentBasedRecommender(df)
@@ -75,14 +60,9 @@ def evaluate_recommender(
         seed_row = df.iloc[seed_idx]
         seed_genres = set([g.strip().lower() for g in str(seed_row["genres"]).split(",")])
 
-        # Track indices
         rec_indices = [recommender.title_to_idx[t.lower()] for t in recs["title"]]
         all_recommended_indices.update(rec_indices)
 
-        # Precision@5 and Precision@10 calculation
-        # A recommended item is judged RELEVANT if:
-        # 1. It shares at least one core genre with the seed movie OR matches expected genre, AND
-        # 2. It has cosine similarity > 0.03 OR matches director/franchise
         hits_at_5 = 0
         hits_at_10 = 0
         genre_matches_5 = 0
@@ -105,7 +85,6 @@ def evaluate_recommender(
             if shares_genre and rank < 5:
                 genre_matches_5 += 1
 
-            # Log failure case if rank < 3 and zero genre match
             if rank < 3 and not shares_genre and not shares_director:
                 failure_cases.append({
                     "seed": seed_title,
@@ -136,7 +115,6 @@ def evaluate_recommender(
             "top_1_sim": round(recs.iloc[0]["similarity_score"], 3),
         })
 
-    # Global aggregate metrics
     catalog_coverage = len(all_recommended_indices) / len(df)
     avg_latency = np.mean(latencies)
 
@@ -159,7 +137,6 @@ def evaluate_recommender(
 
 
 def print_evaluation_report(results: Dict[str, Any]):
-    """Prints a beautiful markdown-style evaluation report to terminal."""
     print("\n" + "=" * 65)
     print("      🎯 MOVIE RECOMMENDATION SYSTEM - BENCHMARK REPORT")
     print("=" * 65)
@@ -184,7 +161,6 @@ if __name__ == "__main__":
     report = evaluate_recommender(weighted=True)
     print_evaluation_report(report)
 
-    # Save to disk
     with open("data/evaluation_report.json", "w") as f:
         json.dump(report, f, indent=2)
     print("Detailed report persisted to data/evaluation_report.json")

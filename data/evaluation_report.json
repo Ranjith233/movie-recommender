@@ -7,7 +7,7 @@
   "mean_genre_alignment@5": 0.97,
   "intra_list_diversity@5": 0.9164,
   "catalog_coverage_pct": 84.82,
-  "mean_query_latency_ms": 36.092,
+  "mean_query_latency_ms": 33.438,
   "failure_case_count": 0,
   "failure_cases": [],
   "detailed_seeds": [
