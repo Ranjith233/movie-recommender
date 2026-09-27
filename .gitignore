@@ -1,0 +1,19 @@
+# Python cache & virtualenvs
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.env
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Streamlit
+.streamlit/
+
+# OS generated files
+.DS_Store
+Thumbs.db

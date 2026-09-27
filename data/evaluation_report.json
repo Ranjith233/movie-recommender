@@ -1,0 +1,195 @@
+{
+  "model_variant": "Weighted Metadata TF-IDF (Cosine Similarity)",
+  "benchmark_sample_size": 20,
+  "catalog_size": 112,
+  "mean_precision@5": 0.98,
+  "mean_precision@10": 0.96,
+  "mean_genre_alignment@5": 0.97,
+  "intra_list_diversity@5": 0.9164,
+  "catalog_coverage_pct": 84.82,
+  "mean_query_latency_ms": 36.092,
+  "failure_case_count": 0,
+  "failure_cases": [],
+  "detailed_seeds": [
+    {
+      "seed": "Inception",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.898,
+      "top_1_rec": "Tenet",
+      "top_1_sim": 0.132
+    },
+    {
+      "seed": "The Dark Knight",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.917,
+      "top_1_rec": "Batman Begins",
+      "top_1_sim": 0.242
+    },
+    {
+      "seed": "The Godfather",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.924,
+      "top_1_rec": "The Godfather: Part II",
+      "top_1_sim": 0.35
+    },
+    {
+      "seed": "Pulp Fiction",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.912,
+      "top_1_rec": "Django Unchained",
+      "top_1_sim": 0.094
+    },
+    {
+      "seed": "Spirited Away",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.87,
+      "top_1_rec": "Howl's Moving Castle",
+      "top_1_sim": 0.269
+    },
+    {
+      "seed": "Parasite",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.963,
+      "top_1_rec": "Memories of Murder",
+      "top_1_sim": 0.305
+    },
+    {
+      "seed": "The Matrix",
+      "precision@5": 1.0,
+      "precision@10": 0.9,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.955,
+      "top_1_rec": "The Matrix Reloaded",
+      "top_1_sim": 0.518
+    },
+    {
+      "seed": "Whiplash",
+      "precision@5": 0.8,
+      "precision@10": 0.5,
+      "genre_alignment@5": 0.8,
+      "diversity@5": 0.979,
+      "top_1_rec": "La La Land",
+      "top_1_sim": 0.225
+    },
+    {
+      "seed": "Blade Runner 2049",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.884,
+      "top_1_rec": "Blade Runner",
+      "top_1_sim": 0.217
+    },
+    {
+      "seed": "Toy Story",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.841,
+      "top_1_rec": "Toy Story 2",
+      "top_1_sim": 0.348
+    },
+    {
+      "seed": "The Shining",
+      "precision@5": 0.8,
+      "precision@10": 0.8,
+      "genre_alignment@5": 0.6,
+      "diversity@5": 0.954,
+      "top_1_rec": "2001: A Space Odyssey",
+      "top_1_sim": 0.092
+    },
+    {
+      "seed": "GoodFellas",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.882,
+      "top_1_rec": "The Godfather",
+      "top_1_sim": 0.176
+    },
+    {
+      "seed": "Avengers: Infinity War",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.899,
+      "top_1_rec": "Avengers: Endgame",
+      "top_1_sim": 0.492
+    },
+    {
+      "seed": "Get Out",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.965,
+      "top_1_rec": "Psycho",
+      "top_1_sim": 0.129
+    },
+    {
+      "seed": "Interstellar",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.928,
+      "top_1_rec": "Tenet",
+      "top_1_sim": 0.143
+    },
+    {
+      "seed": "Se7en",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.885,
+      "top_1_rec": "Zodiac",
+      "top_1_sim": 0.244
+    },
+    {
+      "seed": "Your Name",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.951,
+      "top_1_rec": "About Time",
+      "top_1_sim": 0.129
+    },
+    {
+      "seed": "Before Sunrise",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.911,
+      "top_1_rec": "Before Sunset",
+      "top_1_sim": 0.328
+    },
+    {
+      "seed": "Am\u00e9lie",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.915,
+      "top_1_rec": "Before Sunset",
+      "top_1_sim": 0.11
+    },
+    {
+      "seed": "City of God",
+      "precision@5": 1.0,
+      "precision@10": 1.0,
+      "genre_alignment@5": 1.0,
+      "diversity@5": 0.895,
+      "top_1_rec": "The Godfather",
+      "top_1_sim": 0.079
+    }
+  ]
+}
