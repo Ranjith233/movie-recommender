@@ -1,6 +1,6 @@
 # 🎬 CineMatch AI: Explainable Movie Recommendation & Personalization Engine
 **An End-to-End Machine Learning & NLP Portfolio Project**  
-*Built by [Ranjith Kumar](https://github.com/your-username) • Python, Pandas, Scikit-Learn, TF-IDF, Streamlit*
+*Built by [Ranjith Kumar](https://github.com/Ranjith233) • Python, Pandas, Scikit-Learn, TF-IDF, Streamlit*
 
 ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python&logoColor=white)
 ![Scikit-Learn](https://img.shields.io/badge/ML-Scikit--Learn-F7931E?style=flat&logo=scikitlearn&logoColor=white)
